@@ -50,7 +50,7 @@ export default function ForAgents() {
       <Navbar />
 
       {/* ── Hero ── */}
-      <section className="relative w-full flex justify-center px-6 p-5 mt-60 overflow-hidden z-10">
+      <section className="relative w-full flex justify-center px-6 p-5 mt-7 md:mt-60 overflow-hidden z-10">
         <div className="relative w-full max-w-7xl mx-auto flex flex-col items-center text-center">
           <h1 className="font-bold text-[48px] md:text-[64px] leading-[1.1] tracking-tight text-gradient-primary mb-6 max-w-5xl capitalize">
             Agents Don&apos;t Call APIs.<br /> They Chat.
@@ -62,26 +62,24 @@ export default function ForAgents() {
       </section>
 
       {/* ── 01. Why agents need Infinity (NEW DESIGN) ── */}
-      <section className="relative py-16 px-6 max-w-[1600px] mx-auto z-10">
-        
-        {/* Header Block matching Figma */}
-        <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-16">
-          <div className="flex flex-col gap-3 max-w-2xl">
+      <section className="relative py-16 px-6 w-full max-w-[1600px] mx-auto z-10 flex flex-col items-center">
+        <div className="w-full flex flex-col md:flex-row justify-between items-center md:items-start text-center md:text-left gap-6 md:gap-8 mb-12 md:mb-16">
+          <div className="flex flex-col items-center md:items-start gap-3 max-w-2xl">
             <span className="text-emerald-300 text-[12px] font-mono tracking-widest uppercase mb-2">
               01 · Why agents need Infinity
             </span>
             <h2 className="text-gradient-primary text-[36px] md:text-[42px] font-bold leading-[1.1] tracking-tight">
-              Agents need compute.<br />
+              Agents need compute.<br className="hidden md:block" />
               Existing infra wasn&apos;t built for them.
             </h2>
           </div>
-          <p className="text-muted text-[15px] max-w-sm leading-relaxed md:mt-10">
+          <p className="text-muted text-[15px] max-w-sm leading-relaxed mx-auto md:mx-0 md:mt-10">
             Agents need to launch apps, run simulations, and process data. They speak in intent — &quot;render this,&quot; &quot;train that.&quot; Infinity is built for that language.
           </p>
         </div>
 
         {/* The 3 Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
           {problems.map((p) => (
             <div key={p.number} className="bg-[rgba(34,34,34,0.84)] rounded-[12px] p-6 md:p-8 flex flex-col relative border border-white/5 shadow-xl hover:bg-[rgba(44,44,44,0.84)] transition-colors">
               

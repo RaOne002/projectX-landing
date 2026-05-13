@@ -159,7 +159,7 @@ export default function UseCases() {
       <Navbar />
 
       {/* ── Hero ── */}
-      <section className="relative w-full flex justify-center pb-20 p-5 mt-60 overflow-hidden z-10">
+      <section className="relative w-full flex justify-center pb-20 p-5 mt-7 md:mt-60 overflow-hidden z-10">
         <div className="relative w-full max-w-7xl mx-auto flex flex-col items-center text-center">
           <h1 className="font-bold text-[48px] md:text-[64px] leading-[1.1] tracking-tight text-gradient-primary mb-6 max-w-5xl capitalize">
             Powerful enough for<br /> supercomputers. Accessible<br /> enough for everyone
@@ -172,7 +172,7 @@ export default function UseCases() {
         {useCases.map((uc, i) => (
           <div
             key={uc.heading}
-            className={`flex flex-col ${
+            className={`flex flex-col-reverse ${
               i % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
             } items-center gap-12 lg:gap-24`}
           >

@@ -74,7 +74,7 @@ export default function Pricing() {
       <Navbar />
 
       {/* ── Hero ── */}
-      <section className="relative w-full flex justify-center pb-10 px-6 py-5 mt-60 overflow-hidden z-10">
+      <section className="relative w-full flex justify-center pb-10 px-6 py-5 mt-7 md:mt-60 overflow-hidden z-10">
         <div className="relative w-full max-w-5xl mx-auto flex flex-col items-center text-center">
           <h1 className="font-bold text-[48px] md:text-[64px] leading-[1.1] tracking-tight text-gradient-primary mb-6">
             Pay For What You Use.
@@ -211,7 +211,7 @@ export default function Pricing() {
       <EstimateCalculator />
 
       {/* ── CTA ── */}
-      <section className="relative py-32 px-6 text-center overflow-hidden z-10">
+      <section className="relative pb-10 md:py-32 px-6 text-center overflow-hidden z-10">
         <div className="relative max-w-2xl mx-auto flex flex-col items-center">
           <h2 className="font-bold text-[56px] md:text-[64px] leading-[1.1] text-gradient-primary mb-4">
             Don&apos;t see yours?
