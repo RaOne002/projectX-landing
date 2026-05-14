@@ -22,12 +22,12 @@ function useAutoScroll(speed = 1) {
     const scroll = () => {
       if (!el) return;
       scrollPos += speed;
-      
+
       // Infinite loop: When scrolled halfway (one full set), reset to 0
       if (scrollPos >= el.scrollWidth / 2) {
         scrollPos = 0;
       }
-      
+
       el.scrollLeft = scrollPos;
 
       // Sync internal position if user manually swipes while it's unpaused
@@ -109,7 +109,7 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-hidden mx-1 md:mx-0">
-      
+
       <BackgroundOrbs />
 
       <Navbar />
@@ -132,7 +132,9 @@ export default function Home() {
       </section>
 
       {/* 2. Hero OS Mockup */}
-      <section className="relative z-10 mt-8 md:mt-1 px-4 md:px-0">
+      <section className="relative z-10 mt-8 md:mt-12 px-4 md:px-8 xl:px-0">
+
+        {/* Desktop View (Annotations) */}
         <div
           className="hidden xl:block relative mx-auto"
           style={{ maxWidth: "1300px", aspectRatio: "1280 / 660" }}
@@ -210,13 +212,13 @@ export default function Home() {
         </div>
 
         {/* Mobile/tablet -- plain image */}
-        <div className="xl:hidden max-w-[1100px] mx-auto w-full">
-          <div className="relative w-full rounded-[12px] md:rounded-[18px] overflow-hidden" style={{ aspectRatio: "837/514" }}>
+        <div className="xl:hidden max-w-[1000px] w-full mx-auto">
+          <div className="relative w-full rounded-[12px] md:rounded-[18px] overflow-hidden shadow-[0_0_30px_rgba(0,0,0,0.4)] border border-white/5" style={{ aspectRatio: "837/514" }}>
             <Image
               src="/images/homepage-frame-1.png"
               alt="Infinity OS — one session, multiple apps"
               fill
-              sizes="(max-width: 1100px) 100vw, 1100px"
+              sizes="(max-width: 1280px) 100vw, 1100px"
               className="object-cover"
               priority
             />
@@ -379,7 +381,7 @@ export default function Home() {
         </div>
 
         {/* Mobile View: Infinite Scroll Marquee */}
-        <div 
+        <div
           ref={stepsScroll?.scrollRef}
           onMouseEnter={() => stepsScroll?.setIsPaused(true)}
           onMouseLeave={() => stepsScroll?.setIsPaused(false)}
@@ -424,7 +426,7 @@ export default function Home() {
               <div className="flex flex-col gap-[12px]">
                 <p className="text-neutral-400 text-[14px] font-bold leading-normal">THE OLD WAY</p>
                 <h3 className="text-gradient-primary font-bold text-[40px] md:text-[56px] leading-[1.1] md:leading-[1.05] tracking-[-1px]">
-                  Every other<br className="hidden md:block"/>computer.
+                  Every other<br className="hidden md:block" />computer.
                 </h3>
               </div>
               <p className="text-neutral-400 text-[14px] font-bold leading-normal mt-2 max-w-[416px]">
@@ -484,7 +486,7 @@ export default function Home() {
               <div className="flex flex-col gap-[12px]">
                 <p className="text-accent text-[14px] font-bold leading-normal">INFINITY</p>
                 <h3 className="text-gradient-primary font-bold text-[40px] md:text-[56px] leading-[1.1] md:leading-[1.05] tracking-[-1px]">
-                  The computer<br className="hidden md:block"/>just grew up.
+                  The computer<br className="hidden md:block" />just grew up.
                 </h3>
               </div>
               <p className="text-neutral-400 text-[14px] font-bold leading-normal">
@@ -556,7 +558,7 @@ export default function Home() {
           <div className="flex flex-col gap-10 xl:gap-[110px] w-full max-w-[663px] shrink-0">
             <div className="flex flex-col gap-[16px]">
               <h2 className="text-gradient-primary font-bold text-[40px] md:text-[48px] leading-[1.1] md:leading-tight">
-                Four things no OS has <br className="hidden md:block"/> done before.
+                Four things no OS has <br className="hidden md:block" /> done before.
               </h2>
               <p className="text-muted text-[16px] leading-[1.4] md:leading-[1.2] font-normal">
                 Every app gets its own dedicated computer. Windows and Linux, in the same session. Cold starts under 3
@@ -595,7 +597,7 @@ export default function Home() {
                 <Image
                   src={
                     activeIndex === 0 ? "/images/four-things-macbook.png" :
-                      activeIndex === 1 ? "/images/Property 1.png" : 
+                      activeIndex === 1 ? "/images/Property 1.png" :
                         activeIndex === 2 ? "/images/four-things-macbook.png" :
                           "/images/four-things-macbook.png"
                   }
@@ -617,7 +619,7 @@ export default function Home() {
       {/* 13. "What people are building" */}
       <section className="relative z-10 mt-24 md:mt-32 w-full max-w-[1600px] mx-auto flex flex-col items-center">
         <h2 className="text-gradient-primary font-bold text-[40px] md:text-[56px] leading-[1.1] md:leading-[1.2] text-center mb-10 md:mb-[80px] px-4">
-          What people are<br className="hidden md:block"/> building
+          What people are<br className="hidden md:block" /> building
         </h2>
 
         {/* Desktop View: Accordion + Image */}
@@ -678,7 +680,7 @@ export default function Home() {
         </div>
 
         {/* Mobile View: Horizontal Infinite Carousel */}
-        <div 
+        <div
           ref={useCasesScroll?.scrollRef}
           onMouseEnter={() => useCasesScroll.setIsPaused(true)}
           onMouseLeave={() => useCasesScroll.setIsPaused(false)}

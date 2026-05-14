@@ -17,6 +17,7 @@ export default function Footer() {
                 src="/images/Vector.svg" 
                 alt="Infinity Logo" 
                 fill 
+                sizes="45px" // <-- ADDED THIS to fix the warning
                 className="object-contain" 
               />
             </div>
@@ -67,6 +68,7 @@ export default function Footer() {
             src="/images/infinity.png" 
             alt="infinity 3D text background" 
             fill 
+            sizes="(max-width: 1600px) 100vw, 1600px" // Also added this to prevent warnings on your big image!
             className="object-contain object-bottom"
             priority
           />
