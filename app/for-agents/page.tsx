@@ -62,7 +62,7 @@ export default function ForAgents() {
       </section>
 
       {/* ── 01. Why agents need Infinity (NEW DESIGN) ── */}
-      <section className="relative py-16 px-6 w-full max-w-[1600px] mx-auto z-10 flex flex-col items-center">
+      <section className="relative py-16 px-6 w-full max-w-[1300px] mx-auto z-10 flex flex-col items-center">
         <div className="w-full flex flex-col md:flex-row justify-between items-center md:items-start text-center md:text-left gap-6 md:gap-8 mb-12 md:mb-16">
           <div className="flex flex-col items-center md:items-start gap-3 max-w-2xl">
             <span className="text-emerald-300 text-[12px] font-mono tracking-widest uppercase mb-2">
@@ -117,8 +117,8 @@ export default function ForAgents() {
       </section>
 
       {/* ── 02. Chat-driven orchestration ── */}
-      <section className="relative py-20 px-6 w-full max-w-[1600px] mx-auto z-10 flex flex-col items-center">
-        <div className="w-full max-w-[1600px] flex flex-col gap-3 mb-12 text-center md:text-left">
+      <section className="relative py-20 px-6 w-full max-w-[1300px] mx-auto z-10 flex flex-col items-center">
+        <div className="w-full max-w-[1300px] flex flex-col gap-3 mb-12 text-center md:text-left">
           <span className="text-emerald-300 text-xs font-mono tracking-widest uppercase">
             02 · Chat-driven orchestration
           </span>
@@ -134,8 +134,8 @@ export default function ForAgents() {
       </section>
 
       {/* ── 03. Multi-agent orchestration ── */}
-      <section className="relative py-20 px-6 w-full max-w-[1600px] mx-auto z-10 flex flex-col items-center">
-        <div className="w-full max-w-[1600px] flex flex-col gap-3 mb-12 text-center md:text-left">
+      <section className="relative py-20 px-6 w-full max-w-[1300px] mx-auto z-10 flex flex-col items-center">
+        <div className="w-full max-w-[1300px] flex flex-col gap-3 mb-12 text-center md:text-left">
           <span className="text-emerald-300 text-xs font-mono tracking-widest uppercase">
             03 · Multi-agent orchestration
           </span>

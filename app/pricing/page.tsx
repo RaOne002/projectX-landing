@@ -88,7 +88,7 @@ export default function Pricing() {
       </section>
 
       {/* ── 01. One Unit. Three Inputs. ── */}
-      <section className="relative py-16 px-6 w-full max-w-[1600px] mx-auto z-10">
+      <section className="relative py-16 px-6 w-full max-w-[1300px] mx-auto z-10">
         <div className="flex flex-col gap-2 mb-10 text-center md:text-left">
           <span className="text-emerald-300 text-xs font-mono tracking-widest uppercase">
             01 · What&apos;s a credit
@@ -152,7 +152,7 @@ export default function Pricing() {
       </section>
 
       {/* ── 02. Three Tiers (Fully Interactive) ── */}
-      <section className="relative py-16 px-6 w-full max-w-[1600px] mx-auto z-10">
+      <section className="relative py-16 px-6 w-full max-w-[1300px] mx-auto z-10">
         <div className="flex flex-col gap-2 mb-10 text-center md:text-left">
           <span className="text-emerald-300 text-xs font-mono tracking-widest uppercase">
             02 · Choose your tier

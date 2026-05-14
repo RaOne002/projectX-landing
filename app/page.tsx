@@ -253,7 +253,7 @@ export default function Home() {
       </section>
 
       {/* 4. "The OS for the age of AI agents" */}
-      <section className="relative z-10 mt-24 px-4 sm:px-1 max-w-[1600px] mx-auto">
+      <section className="relative z-10 mt-24 px-4 sm:px-1 max-w-[1300px] mx-auto">
         <div className="flex flex-col xl:flex-row items-center text-center xl:text-left gap-12 xl:gap-[133px]">
           {/* Left text */}
           <div className="flex flex-col items-center xl:items-start gap-6 w-full max-w-[494px] shrink-0">
@@ -313,12 +313,12 @@ export default function Home() {
       </section>
 
       {/* 6. Session Frame */}
-      <section className="relative py-4 md:py-8 px-4 md:px-6 w-full max-w-[1600px] mx-auto z-10">
+      <section className="relative py-4 md:py-8 px-4 md:px-6 w-full max-w-[1300px] mx-auto z-10">
         <SessionFrame />
       </section>
 
       {/* 7. Stats Bar */}
-      <section className="relative z-10 mt-12 md:mt-16 px-4 md:px-1 max-w-[1600px] mx-auto">
+      <section className="relative z-10 mt-12 md:mt-16 px-4 md:px-1 max-w-[1300px] mx-auto">
         <div className="bg-[rgba(34,34,34,0.6)] rounded-[12px] p-8 md:px-12 md:py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-12 md:gap-8">
             <div className="flex flex-col gap-2 text-center flex-1">
@@ -358,7 +358,7 @@ export default function Home() {
       </section>
 
       {/* 9. 3-step cards (Desktop: Centered, Mobile: Infinite Marquee) */}
-      <section className="relative z-10 mt-12 w-full max-w-[1600px] mx-auto">
+      <section className="relative z-10 mt-12 w-full max-w-[1300px] mx-auto">
         {/* Desktop View */}
         <div className="hidden md:flex gap-8 items-start justify-center px-6">
           {steps.map((step) => (
@@ -417,15 +417,17 @@ export default function Home() {
       </section>
 
       {/* 11. Comparison: Every other computer vs The computer just grew up */}
-      <section className="relative z-10 mt-16 md:mt-[128px] px-4 md:px-1 max-w-[1600px] mx-auto w-full">
-        <div className="flex flex-col lg:flex-row lg:gap-[97px] items-center lg:items-start justify-center w-full">
+      <section className="relative z-10 mt-16 md:mt-[128px] px-4 md:px-8 max-w-[1300px] mx-auto w-full">
+        {/* Responsive gap to fit perfectly in 1300px */}
+        <div className="flex flex-col lg:flex-row lg:gap-12 xl:gap-20 items-center lg:items-start justify-center w-full">
 
           {/* Left Column: THE OLD WAY */}
-          <div className="flex flex-col w-full max-w-[681px] shrink-0 mb-16 lg:mb-0">
+          {/* Changed from strict max-w to flex-1 to allow fluid scaling */}
+          <div className="flex flex-col w-full flex-1 max-w-[600px] lg:max-w-none mb-16 lg:mb-0">
             <div className="flex flex-col gap-[7px]">
               <div className="flex flex-col gap-[12px]">
                 <p className="text-neutral-400 text-[14px] font-bold leading-normal">THE OLD WAY</p>
-                <h3 className="text-gradient-primary font-bold text-[40px] md:text-[56px] leading-[1.1] md:leading-[1.05] tracking-[-1px]">
+                <h3 className="text-gradient-primary font-bold text-[40px] lg:text-[48px] xl:text-[56px] leading-[1.1] md:leading-[1.05] tracking-[-1px]">
                   Every other<br className="hidden md:block" />computer.
                 </h3>
               </div>
@@ -449,15 +451,15 @@ export default function Home() {
                   src="/images/old-way-macbook.png"
                   alt="Every other computer mockup"
                   fill
-                  sizes="(max-width: 768px) 100vw, 481px"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover rounded-b-[10px]"
                 />
               </div>
             </div>
 
             {/* The Old Way Icon List */}
-            <div className="mt-4 bg-neutral-800 rounded-[12px] p-6 md:px-10 md:py-[17px]">
-              <div className="flex flex-col sm:flex-row gap-6 sm:gap-[60px] items-start sm:items-center">
+            <div className="mt-4 bg-neutral-800 rounded-[12px] p-6 md:px-8 xl:px-10 md:py-[17px]">
+              <div className="flex flex-col sm:flex-row gap-6 lg:gap-4 xl:gap-8 items-start sm:items-center">
                 <div className="flex gap-[10px] items-center shrink-0">
                   <div className="bg-[rgba(105,105,105,0.5)] rounded-[4px] w-[33px] h-[33px] flex items-center justify-center">
                     <span className="text-white text-[18px]">⏱️</span>
@@ -481,15 +483,16 @@ export default function Home() {
           </div>
 
           {/* Right Column: INFINITY */}
-          <div className="flex flex-col w-full max-w-[672px] shrink-0">
+          {/* Changed to flex-1 for fluid scaling */}
+          <div className="flex flex-col w-full flex-1 max-w-[600px] lg:max-w-none">
             <div className="flex flex-col gap-[22px] mb-[22px]">
               <div className="flex flex-col gap-[12px]">
                 <p className="text-accent text-[14px] font-bold leading-normal">INFINITY</p>
-                <h3 className="text-gradient-primary font-bold text-[40px] md:text-[56px] leading-[1.1] md:leading-[1.05] tracking-[-1px]">
+                <h3 className="text-gradient-primary font-bold text-[40px] lg:text-[48px] xl:text-[56px] leading-[1.1] md:leading-[1.05] tracking-[-1px]">
                   The computer<br className="hidden md:block" />just grew up.
                 </h3>
               </div>
-              <p className="text-neutral-400 text-[14px] font-bold leading-normal">
+              <p className="text-neutral-400 text-[14px] font-bold leading-normal max-w-[450px]">
                 Every app gets its own dedicated computer. They all run simultaneously. You — or your agents — work across all of them at once.
               </p>
             </div>
@@ -509,15 +512,15 @@ export default function Home() {
                   src="/images/infinity-macbook.png"
                   alt="Infinity computer mockup"
                   fill
-                  sizes="(max-width: 768px) 100vw, 472px"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
                 />
               </div>
             </div>
 
             {/* Infinity Features Bar */}
-            <div className="bg-neutral-800 rounded-[12px] w-full p-6 sm:px-8 sm:py-5">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 sm:gap-4">
+            <div className="bg-neutral-800 rounded-[12px] w-full p-6 sm:px-8 xl:px-8 sm:py-5">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 sm:gap-4 lg:gap-2 xl:gap-4">
                 <div className="flex items-center gap-[6px] shrink-0">
                   <div className="w-[36px] h-[36px] bg-[rgba(105,105,105,0.5)] rounded-[4px] flex items-center justify-center shrink-0">
                     <span className="text-white text-[18px]">⚡</span>
@@ -551,73 +554,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 12. "Four things no OS has done before" */}
-      <section className="relative z-10 mt-24 px-4 max-w-[1600px] mx-auto">
-        <div className="flex flex-col xl:flex-row gap-12 xl:gap-[97px] items-center justify-center">
-          {/* Left */}
-          <div className="flex flex-col gap-10 xl:gap-[110px] w-full max-w-[663px] shrink-0">
-            <div className="flex flex-col gap-[16px]">
-              <h2 className="text-gradient-primary font-bold text-[40px] md:text-[48px] leading-[1.1] md:leading-tight">
-                Four things no OS has <br className="hidden md:block" /> done before.
-              </h2>
-              <p className="text-muted text-[16px] leading-[1.4] md:leading-[1.2] font-normal">
-                Every app gets its own dedicated computer. Windows and Linux, in the same session. Cold starts under 3
-                seconds. And your agents can drive all of it.
-              </p>
-              <div className="flex flex-col gap-4 sm:gap-[3px] mt-6 md:mt-8">
-                {fourThings.map((item, i) => (
-                  <p
-                    key={item.num}
-                    onClick={() => setActiveIndex(i)}
-                    className={`cursor-pointer transition-all duration-200 text-[16px] leading-normal whitespace-pre-wrap flex gap-4 md:gap-5 ${i === activeIndex
-                      ? "text-white font-bold"
-                      : "text-muted font-normal hover:text-neutral-300"
-                      }`}
-                  >
-                    <span>{item.num}</span><span>{item.text}</span>
-                  </p>
-                ))}
-              </div>
-            </div>
-            <Button href="/how-it-works" size="md">
-              Try Infinity
-            </Button>
-          </div>
-          {/* Right: macbook */}
-          <div className="flex flex-col gap-[12px] shrink-0 w-full max-w-[767px]">
-            <div className="relative aspect-[567/415] w-full bg-[rgba(34,34,34,0.6)] rounded-[12px] overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 bg-[rgba(44,44,44,0.6)] h-[35px] flex items-center px-4 z-10">
-                <div className="flex gap-1.5">
-                  <div className="w-[11px] h-[11px] rounded-full bg-red-400" />
-                  <div className="w-[11px] h-[11px] rounded-full bg-amber-400" />
-                  <div className="w-[11px] h-[11px] rounded-full bg-green-500" />
-                </div>
-              </div>
-              <div className="absolute top-[35px] left-[3px] right-[3px] bottom-[14px] rounded-[8px] overflow-hidden">
-                <Image
-                  src={
-                    activeIndex === 0 ? "/images/four-things-macbook.png" :
-                      activeIndex === 1 ? "/images/Property 1.png" :
-                        activeIndex === 2 ? "/images/four-things-macbook.png" :
-                          "/images/four-things-macbook.png"
-                  }
-                  alt={`Infinity feature ${activeIndex + 1}`}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 559px"
-                  className="object-cover rounded-[8px] transition-opacity duration-300"
-                />
-              </div>
-            </div>
-            <p className="text-[#909090] text-[14px] leading-normal w-full max-w-[545px]">
-              &quot;Windows app and Linux app. Same session. Same files. The application is what matters, not what it
-              was compiled for.&quot;
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* 13. "What people are building" */}
-      <section className="relative z-10 mt-24 md:mt-32 w-full max-w-[1600px] mx-auto flex flex-col items-center">
+      <section className="relative z-10 mt-24 md:mt-32 w-full max-w-[1300px] mx-auto flex flex-col items-center">
         <h2 className="text-gradient-primary font-bold text-[40px] md:text-[56px] leading-[1.1] md:leading-[1.2] text-center mb-10 md:mb-[80px] px-4">
           What people are<br className="hidden md:block" /> building
         </h2>
@@ -706,7 +644,7 @@ export default function Home() {
       </section>
 
       {/* 14. Pricing */}
-      <section className="relative z-10 mt-24 px-4 max-w-[1600px] mx-auto">
+      <section className="relative z-10 mt-24 px-4 max-w-[1300px] mx-auto">
         <h2 className="text-gradient-primary font-bold text-[40px] md:text-[56px] leading-[1.1] md:leading-[1.2] text-center mb-12">
           Pricing
         </h2>
@@ -803,7 +741,7 @@ export default function Home() {
       </section>
 
       {/* 15. "Already running in production" logo bar */}
-      <section className="relative z-10 mt-24 px-4 max-w-[1600px] mx-auto text-center">
+      <section className="relative z-10 mt-24 px-4 max-w-[1300px] mx-auto text-center">
         <div className="flex flex-col gap-6 md:gap-[36px] items-center w-full max-w-[905px] mx-auto">
           <p className="text-neutral-400 text-[16px] md:text-[20px] font-bold">Already running in production</p>
           <div className="flex flex-wrap gap-6 md:gap-[47px] items-center justify-center text-white text-[24px] md:text-[32px] font-bold">

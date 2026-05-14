@@ -49,7 +49,7 @@ export default function EstimateCalculator() {
   const progressPercent = Math.min((totalCredits / maxPossibleCredits) * 100 + 5, 100);
 
   return (
-    <section className="relative py-24 px-6 w-full max-w-[1600px] mx-auto z-10">
+    <section className="relative py-24 px-6 w-full max-w-[1300px] mx-auto z-10">
       <div className="flex flex-col gap-2 mb-10 text-center md:text-left">
         <span className="text-emerald-300 text-xs font-mono tracking-widest uppercase">
           03 · Calculator

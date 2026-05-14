@@ -63,7 +63,7 @@ export default function Footer() {
       {/* We use a container with a fixed height and overflow-hidden to crop the bottom off. 
           The translate-y pushes the image down so it looks embedded. */}
       <div className="w-full mt-12 sm:mt-8 mb-5 flex justify-center items-end pointer-events-none select-none overflow-hidden h-[180px] sm:h-[350px] lg:h-[450px] relative z-0">
-        <div className="relative w-[120%] sm:w-full max-w-[1600px] h-full translate-y-[20%] sm:translate-y-[15%] opacity-90">
+        <div className="relative w-[120%] sm:w-full max-w-[1300px] h-full translate-y-[20%] sm:translate-y-[15%] opacity-90">
           <Image 
             src="/images/infinity.png" 
             alt="infinity 3D text background" 

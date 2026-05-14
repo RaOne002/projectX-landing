@@ -168,7 +168,7 @@ export default function UseCases() {
       </section>
 
       {/* ── Use Cases Content ── */}
-      <section className="relative py-8 px-6 max-w-[1500px] mx-auto flex flex-col gap-32 z-10">
+      <section className="relative py-8 px-6 max-w-[1300px] mx-auto flex flex-col gap-32 z-10">
         {useCases.map((uc, i) => (
           <div
             key={uc.heading}

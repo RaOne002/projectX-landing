@@ -54,7 +54,7 @@ export default function HowItWorks() {
       <Navbar />
 
       {/* ── Hero ── */}
-      <section className="relative pt-40 pb-16 px-6 overflow-hidden z-10 mt-10">
+      <section className="relative p-5 pb-16 px-6 mt-7 md:mt-60 overflow-hidden z-10 mt-10">
         <div className="relative max-w-5xl mx-auto flex flex-col items-center text-center">
           <h1 className="text-gradient-primary font-bold text-[56px] md:text-[64px] leading-tight mb-6 tracking-tight">
             A New Computing
@@ -68,7 +68,7 @@ export default function HowItWorks() {
       </section>
 
       {/* ── Steps with Central Timeline ── */}
-      <section className="relative py-0 px-6 max-w-[1600px] mx-auto z-10 mt-10">
+      <section className="relative py-0 px-6 max-w-[1300px] mx-auto z-10 mt-10">
 
         {/* Central Vertical Timeline Line (Desktop Only) */}
         <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-[1px] bg-white/20 z-0" />
@@ -145,7 +145,7 @@ export default function HowItWorks() {
 
       {/* ── "Orchestrate it like you'd ask a person." ── */}
       <section className="relative py-32 px-6 overflow-hidden z-10 mt-16">
-        <div className="relative max-w-[1600px] mx-auto flex flex-col items-center gap-16 md:gap-[100px]">
+        <div className="relative max-w-[1300px] mx-auto flex flex-col items-center gap-16 md:gap-[100px]">
           
           {/* Top Text Block */}
           <div className="flex flex-col items-center text-center max-w-[800px] gap-6">
