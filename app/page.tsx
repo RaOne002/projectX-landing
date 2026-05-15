@@ -6,6 +6,9 @@ import Footer from "@/components/footer";
 import Button from "@/components/button";
 import BackgroundOrbs from "@/components/background-orbs";
 import SessionFrame from "@/components/session-frame";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+import "swiper/css";
 
 // Custom Hook to handle auto-scrolling with manual swipe freedom
 function useAutoScroll(speed = 1) {
@@ -381,31 +384,52 @@ export default function Home() {
         </div>
 
         {/* Mobile View: Infinite Scroll Marquee */}
-        <div
-          ref={stepsScroll?.scrollRef}
-          onMouseEnter={() => stepsScroll?.setIsPaused(true)}
-          onMouseLeave={() => stepsScroll?.setIsPaused(false)}
-          onTouchStart={() => stepsScroll?.setIsPaused(true)}
-          onTouchEnd={() => stepsScroll?.setIsPaused(false)}
-          className="flex md:hidden w-full overflow-x-auto gap-6 pb-8 px-4 hide-scrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-        >
-          {[...steps, ...steps].map((step, i) => (
-            <div key={`${step.label}-${i}`} className="flex-none w-[85vw] max-w-[350px] flex flex-col gap-[19px]">
-              <div className="bg-[rgba(34,34,34,0.6)] rounded-[8px] overflow-hidden">
-                <div className="flex items-center gap-[7px] px-4 py-[10px]">
-                  <div className="w-[14px] h-[13px] rounded-full bg-neutral-300" />
-                  <div className="w-[14px] h-[13px] rounded-full bg-neutral-300" />
-                  <span className="text-white text-[12px] font-bold" style={{ fontFamily: '"Sk Modernist", sans-serif' }}>
-                    {step.label}
-                  </span>
+        {/* Mobile View: Swiper Carousel */}
+        <div className="flex md:hidden w-full overflow-hidden pb-8 mt-4">
+          <Swiper
+            modules={[Autoplay]}
+            spaceBetween={24} // 24px gap matches your original gap-6
+            slidesPerView="auto"
+            loop={true}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: true,
+              pauseOnMouseEnter: true,
+            }}
+            className="w-full px-4"
+          >
+            {steps.map((step, i) => (
+              <SwiperSlide 
+                key={`${step.label}-${i}`} 
+                // Using ! important to ensure Swiper respects our custom widths
+                className="!w-[85vw] !max-w-[350px] h-auto"
+              >
+                <div className="flex flex-col gap-[19px]">
+                  <div className="bg-[rgba(34,34,34,0.6)] rounded-[8px] overflow-hidden">
+                    <div className="flex items-center gap-[7px] px-4 py-[10px]">
+                      <div className="w-[14px] h-[13px] rounded-full bg-neutral-300" />
+                      <div className="w-[14px] h-[13px] rounded-full bg-neutral-300" />
+                      <span className="text-white text-[12px] font-bold" style={{ fontFamily: '"Sk Modernist", sans-serif' }}>
+                        {step.label}
+                      </span>
+                    </div>
+                    <div className="relative w-full" style={{ aspectRatio: "357/208" }}>
+                      <Image 
+                        src={step.image} 
+                        alt={step.label} 
+                        fill 
+                        sizes="(max-width: 768px) 85vw, 350px" 
+                        className="object-cover rounded-b-[8px]" 
+                      />
+                    </div>
+                  </div>
+                  <p className="text-neutral-400 text-[16px] font-bold leading-normal px-2">
+                    {step.caption}
+                  </p>
                 </div>
-                <div className="relative w-full" style={{ aspectRatio: "357/208" }}>
-                  <Image src={step.image} alt={step.label} fill sizes="85vw" className="object-cover rounded-b-[8px]" />
-                </div>
-              </div>
-              <p className="text-neutral-400 text-[16px] font-bold leading-normal px-2">{step.caption}</p>
-            </div>
-          ))}
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </section>
 
@@ -617,29 +641,47 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Mobile View: Horizontal Infinite Carousel */}
-        <div
-          ref={useCasesScroll?.scrollRef}
-          onMouseEnter={() => useCasesScroll.setIsPaused(true)}
-          onMouseLeave={() => useCasesScroll.setIsPaused(false)}
-          onTouchStart={() => useCasesScroll.setIsPaused(true)}
-          onTouchEnd={() => useCasesScroll.setIsPaused(false)}
-          className="flex xl:hidden w-full overflow-x-auto gap-4 pb-8 px-4 hide-scrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-        >
-          {[...useCasesData, ...useCasesData].map((uc, i) => (
-            <div key={`${uc.title}-${i}`} className="flex-none w-[85vw] sm:w-[400px] bg-[rgba(34,34,34,0.6)] border border-white/5 rounded-[12px] flex flex-col overflow-hidden">
-              <div className="relative aspect-[16/10] w-full">
-                <Image src={uc.image} alt={uc.title} fill className="object-cover" sizes="(max-width: 768px) 85vw, 400px" />
-              </div>
-              <div className="p-6 flex flex-col gap-3 flex-1 bg-[#1a1a1a]">
-                <h3 className="text-white text-[20px] font-bold">{uc.title}</h3>
-                <p className="text-muted text-[14px] leading-relaxed flex-1">{uc.description}</p>
-                <div className="pt-2">
-                  <Button href="/use-cases" size="sm">Learn More</Button>
+        {/* Mobile View: Swiper Carousel */}
+        <div className="flex xl:hidden flex-col items-center w-full overflow-hidden pb-8 mt-4">
+          <Swiper
+            modules={[Autoplay]}
+            spaceBetween={16}
+            slidesPerView="auto"
+            loop={true}
+            autoplay={{
+              delay: 2000,
+              disableOnInteraction: true,
+              pauseOnMouseEnter: true, // Native pause on hover!
+            }}
+            className="w-full px-4"
+          >
+            {/* Notice we don't need to duplicate the array anymore, Swiper handles looping natively! */}
+            {useCasesData.map((uc, i) => (
+              <SwiperSlide
+                key={`${uc.title}-${i}`}
+                // We force the width on the slide so Swiper knows how to size them
+                className="!w-[85vw] sm:!w-[400px] h-auto"
+              >
+                <div className="bg-[rgba(34,34,34,0.6)] border border-white/5 rounded-[12px] flex flex-col overflow-hidden h-full">
+                  <div className="relative aspect-[16/10] w-full">
+                    <Image src={uc.image} alt={uc.title} fill className="object-cover" sizes="(max-width: 768px) 85vw, 400px" />
+                  </div>
+                  <div className="p-6 flex flex-col gap-3 flex-1 bg-[#1a1a1a]">
+                    <h3 className="text-white text-[20px] font-bold">{uc.title}</h3>
+                    <p className="text-muted text-[14px] leading-relaxed flex-1">{uc.description}</p>
+                    {/* Buttons removed from inside the cards */}
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          {/* Single Button Outside the Carousel */}
+          <div className="mt-10">
+            <Button href="/use-cases" size="md">
+              View All Use Cases
+            </Button>
+          </div>
         </div>
       </section>
 
