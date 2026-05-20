@@ -34,7 +34,7 @@ const useCases = [
       { name: "MuJoCo", icon: "/images/logos/mujoco.svg" }
     ],
     who: "University robotics labs, industrial automation, autonomous vehicles",
-    image: "/images/uc-robotics.png",
+    image: "/images/use-cases/uc-robotics.png",
     alt: "Robotics simulation",
   },
   {
@@ -49,7 +49,7 @@ const useCases = [
       { name: "Fusion 360", icon:"/image/logos/fusion.svg" } 
     ],
     who: "Industrial designers, architects, freelance 3D artists",
-    image: "/images/uc-3d-modeling.png",
+    image: "/images/use-cases/uc-3d-modeling.png",
     alt: "3D modeling",
   },
   {
@@ -63,7 +63,7 @@ const useCases = [
       { name: "Gaussian", icon: "/images/logos/gaussian.svg" } 
     ],
     who: "Bioinformaticians, climate scientists, academic researchers",
-    image: "/images/uc-science.png",
+    image: "/images/use-cases/uc-science.png",
     alt: "Science and research",
   },
   {
@@ -77,7 +77,7 @@ const useCases = [
       { name: "Postman", icon: "/images/logos/postman.svg" }
     ],
     who: "DevOps engineers, SREs, platform teams",
-    image: "/images/uc-devops.png",
+    image: "/images/use-cases/uc-devops.png",
     alt: "DevOps and cloud engineering",
   },
   {
@@ -91,7 +91,7 @@ const useCases = [
       { name: "OHIF Viewer", icon: "/images/logos/ohif-viewer.svg" }
     ],
     who: "Radiologists, medical researchers, healthcare IT",
-    image: "/images/uc-medical.png",
+    image: "/images/use-cases/uc-medical.png",
     alt: "Medical imaging",
   },
   {
@@ -105,7 +105,7 @@ const useCases = [
       { name: "JAX", icon: "/images/logos/jax.svg" }
     ],
     who: "ML engineers, data scientists, AI researchers",
-    image: "/images/uc-ai-ml.png",
+    image: "/images/use-cases/uc-ai-ml.png",
     alt: "AI/ML development",
   },
   {
@@ -121,7 +121,7 @@ const useCases = [
       { name: "Pencil2D", icon: "/images/logos/pencil2d.svg" } 
     ],
     who: "VFX artists, indie game devs, post-production",
-    image: "/images/uc-game-dev.png",
+    image: "/images/use-cases/uc-game-dev.png",
     alt: "Game development and VFX",
   },
   {
@@ -132,7 +132,7 @@ const useCases = [
       { name: "Any app in the catalog" }
     ],
     who: "Universities, bootcamps, K–12 STEM programs",
-    image: "/images/uc-education.png",
+    image: "/images/use-cases/uc-education.png",
     alt: "Education AI accelerator",
   },
   {
@@ -146,7 +146,7 @@ const useCases = [
       { name: "VPC" } 
     ],
     who: "IT admins, enterprise security teams, CTOs",
-    image: "/images/uc-enterprise.png",
+    image: "/images/use-cases/uc-enterprise.png",
     alt: "Enterprise IT",
   },
 ];
