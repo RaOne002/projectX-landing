@@ -50,7 +50,7 @@ export default function Navbar() {
   const closeMenu = () => setIsMobileMenuOpen(false);
 
   return (
-    <header className="relative md:fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 lg:px-10 py-6 lg:py-[39px]">
+    <header className="relative md:fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 lg:px-10 py-3 lg:py-5">
       
       {/* Logo */}
       <Link href="/" className="shrink-0 hover:opacity-80 transition-opacity text-white" aria-label="Infinity by ProjectX">

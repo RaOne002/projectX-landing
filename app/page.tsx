@@ -1,6 +1,6 @@
 ﻿"use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
@@ -10,6 +10,8 @@ import SessionFrame from "@/components/session-frame";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
+import Marquee from "react-fast-marquee";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 const steps = [
   {
@@ -29,7 +31,6 @@ const steps = [
   },
 ];
 
-// UPDATED: "Four things" array with image paths from your new folder and exact text from the screenshot
 const fourThings = [
   { num: "01", text: "Every app is its own computer.", image: "/images/home_four-things/1.png" },
   { num: "02", text: "Windows and linux apps in same workspace", image: "/images/home_four-things/2.png" },
@@ -37,7 +38,6 @@ const fourThings = [
   { num: "04", text: "Humans and agents coexist.", image: "/images/home_four-things/4.png" },
 ];
 
-// UPDATED: "What people are building" array pointing to your new folder
 const buildingData = [
   { title: "Robotics and Simulation", image: "/images/home_building/robotics.png" },
   { title: "Game Development & VFX", image: "/images/home_building/game-dev.png" },
@@ -46,18 +46,67 @@ const buildingData = [
   { title: "3D Modeling & CAD", image: "/images/home_building/3d-modeling.png" },
 ];
 
+const BUILDING_CARD_W = 440;
+const BUILDING_GAP = 24;
+
 export default function Home() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [activePlan, setActivePlan] = useState(1);
+  
+ // Refs for section tracking
+  const heroSectionRef = useRef<HTMLElement>(null);
+
+ // State and Ref for Change #1 (Mockup Scroll Animation)
+  const [mockupStep, setMockupStep] = useState(1);
+  const mockupSectionRef = useRef<HTMLElement>(null);
+
+  // Scroll-jacked horizontal carousel for "What people are building"
+  const buildingRef = useRef<HTMLDivElement>(null);
+  const winWRef = useRef(1440);
+  useEffect(() => {
+    winWRef.current = window.innerWidth;
+    const onResize = () => { winWRef.current = window.innerWidth; };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+  const { scrollYProgress: buildingScrollProgress } = useScroll({
+    target: buildingRef,
+    offset: ["start start", "end end"],
+  });
+  // x=0: first card at paddingLeft (10vw). x=endX: last card right edge at 90vw.
+  const buildingX = useTransform(buildingScrollProgress, (progress) => {
+    const w = winWRef.current;
+    const cardW = w < 768 ? 280 : BUILDING_CARD_W;
+    const gap = w < 768 ? 16 : BUILDING_GAP;
+    const totalSlide = (buildingData.length - 1) * (cardW + gap);
+    const endX = w * 0.8 - cardW - totalSlide;
+    return progress * endX;
+  });
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!mockupSectionRef.current) return;
+      const rect = mockupSectionRef.current.getBoundingClientRect();
+      
+      // Triggers the animation when the mockup scrolls up to 30% of the screen height
+      if (rect.top <= window.innerHeight * 0.3) {
+        setMockupStep(2);
+      } else {
+        setMockupStep(1);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <div className="relative min-h-screen bg-background overflow-x-hidden mx-1 md:mx-0">
+    <div className="relative min-h-screen bg-background overflow-x-clip mx-1 md:mx-0">
 
       <BackgroundOrbs />
       <Navbar />
 
-      {/* 1. Hero */}
-      <section className="relative z-10 pt-7 md:pt-[228px] pb-0 flex flex-col items-center text-center px-4">
+      {/* 1. Hero (Targeted by IntersectionObserver) */}
+      <section ref={heroSectionRef} className="relative z-10 pt-7 md:pt-[228px] pb-0 flex flex-col items-center text-center px-4">
         <div className="flex flex-col items-center gap-6 max-w-full mx-auto">
           <h1 className="text-gradient-primary font-bold text-[48px] md:text-[72px] leading-[1.1] md:leading-[1.2] tracking-[-1px] md:tracking-[-2px] text-center">
             Run Anything
@@ -74,55 +123,75 @@ export default function Home() {
       </section>
 
       {/* 2. Hero OS Mockup */}
-      <section className="relative z-10 mt-8 md:mt-12 px-4 md:px-8 xl:px-0">
+      <section ref={mockupSectionRef} className="relative z-10 mt-8 md:mt-12 px-4 md:px-8 xl:px-0 w-full">
+        
         <div className="hidden xl:block relative mx-auto" style={{ maxWidth: "1300px", aspectRatio: "1280 / 660" }}>
-          <div className="absolute rounded-[18px] overflow-hidden" style={{ left: "12%", top: "7%", width: "76%", height: "84%" }}>
+          
+          {/* Base Image */}
+          <div className="absolute rounded-[18px] overflow-hidden shadow-2xl border border-white/5" style={{ left: "12%", top: "7%", width: "76%", height: "84%" }}>
             <Image src="/images/homepage-frame-1.png" alt="Infinity OS" fill sizes="(min-width: 1440px) 76vw" className="object-cover object-center" priority />
           </div>
 
-          {/* Annotations */}
-          <div className="absolute pointer-events-none flex items-center justify-center" style={{ left: "83.5%", top: "3.5%", width: "0px", height: "53px" }}>
-            <svg viewBox="0 0 54 7.364" width="53" height="7.23" fill="none" style={{ overflow: "visible", flexShrink: 0, transform: "rotate(-90deg)" }}><path d="M0.5 3.182C0.224 3.182 0 3.406 0 3.682C0 3.958 0.224 4.182 0.5 4.182V3.682V3.182ZM53.854 4.036C54.049 3.84 54.049 3.524 53.854 3.328L50.672 0.146C50.476 -0.049 50.16 -0.049 49.964 0.146C49.769 0.342 49.769 0.658 49.964 0.854L52.793 3.682L49.964 6.51C49.769 6.706 49.769 7.022 49.964 7.218C50.16 7.413 50.476 7.413 50.672 7.218L53.854 4.036ZM0.5 3.682V4.182H53.5V3.682V3.182H0.5V3.682Z" fill="white" /></svg>
+          {/* GROUP 1: Initial 3 Features */}
+          <div className={`absolute inset-0 transition-all duration-700 ease-in-out ${mockupStep === 1 ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"}`}>
+            {/* 1. Browser Tab */}
+            <div className="absolute pointer-events-none flex items-center justify-center" style={{ left: "83.5%", top: "3.5%", width: "0px", height: "53px" }}>
+              <svg viewBox="0 0 54 7.364" width="53" height="7.23" fill="none" style={{ overflow: "visible", flexShrink: 0, transform: "rotate(-90deg)" }}><path d="M0.5 3.182C0.224 3.182 0 3.406 0 3.682C0 3.958 0.224 4.182 0.5 4.182V3.682V3.182ZM53.854 4.036C54.049 3.84 54.049 3.524 53.854 3.328L50.672 0.146C50.476 -0.049 50.16 -0.049 49.964 0.146C49.769 0.342 49.769 0.658 49.964 0.854L52.793 3.682L49.964 6.51C49.769 6.706 49.769 7.022 49.964 7.218C50.16 7.413 50.476 7.413 50.672 7.218L53.854 4.036ZM0.5 3.682V4.182H53.5V3.682V3.182H0.5V3.682Z" fill="white" /></svg>
+            </div>
+            <div className="absolute" style={{ left: "83.3%", top: "-3%", maxWidth: "170px" }}>
+              <p className="font-bold leading-tight" style={{ color: "#fff", fontSize: "12px" }}>Its just a Browser tab</p>
+              <p className="leading-tight mt-0.5" style={{ color: "#0DF0B7", fontSize: "10px" }}>No install,No driver setup, works<br /> on a chromebook</p>
+            </div>
+
+            {/* 2. GPU Telemetry */}
+            <div className="absolute pointer-events-none flex items-center justify-center" style={{ left: "11%", top: "24.41%", width: "51.29px", height: "19.35px" }}>
+              <svg viewBox="0 0 52.644 15.938" width="50" height="15.14" fill="none" style={{ overflow: "visible", flexShrink: 0, transform: "rotate(-174.88deg)" }}><path d="M0.578 0.482C0.305 0.439 0.049 0.625 0.006 0.898C-0.037 1.171 0.15 1.427 0.423 1.47L0.5 0.976L0.578 0.482ZM51.13 0.335C51.038 0.074 50.753 -0.063 50.492 0.028L46.245 1.515C45.984 1.606 45.847 1.891 45.938 2.152C46.03 2.413 46.315 2.55 46.575 2.459L50.351 1.137L51.672 4.913C51.764 5.173 52.049 5.311 52.309 5.219C52.57 5.128 52.707 4.843 52.616 4.582L51.13 0.335ZM0.5 0.976L0.423 1.47C5.419 2.254 10.081 4.562 14.537 7.133C18.961 9.686 23.226 12.529 27.307 14.263C31.413 16.008 35.459 16.69 39.468 14.827C43.45 12.977 47.282 8.665 51.108 0.717L50.658 0.5L50.207 0.283C46.416 8.158 42.714 12.216 39.046 13.92C35.404 15.613 31.682 15.035 27.698 13.343C23.691 11.64 19.546 8.869 15.037 6.267C10.559 3.683 5.764 1.296 0.578 0.482L0.5 0.976Z" fill="white" /></svg>
+            </div>
+            <div className="absolute text-right" style={{ right: "88.5%", top: "27%", maxWidth: "170px" }}>
+              <p className="font-bold leading-tight" style={{ color: "#fff", fontSize: "12px" }}>Per-app GPU telemetry</p>
+              <p className="leading-tight mt-0.5" style={{ color: "#0DF0B7", fontSize: "10px" }}>See exactly which app is using GPU,live</p>
+            </div>
+
+            {/* 3. Two GPUs */}
+            <div className="absolute pointer-events-none flex items-center justify-center" style={{ left: "10%", top: "46.55%", width: "68.75px", height: "26.49px" }}>
+              <svg viewBox="0 0 68.594 24.681" width="68" height="24.47" fill="none" style={{ overflow: "visible", flexShrink: 0, transform: "scaleY(-1) rotate(-176.82deg)" }}><path d="M0.348 2.986C0.085 3.07 -0.06 3.352 0.024 3.615C0.108 3.878 0.389 4.023 0.652 3.939L0.5 3.463L0.348 2.986ZM68.194 23.768C68.465 23.713 68.639 23.448 68.584 23.178L67.681 18.769C67.626 18.499 67.361 18.324 67.091 18.38C66.82 18.435 66.646 18.699 66.701 18.97L67.504 22.889L63.585 23.691C63.315 23.747 63.14 24.011 63.196 24.281C63.251 24.552 63.515 24.726 63.786 24.671L68.194 23.768ZM0.5 3.463L0.652 3.939C13.852 -0.28 23.993 0.291 34.135 4.074C44.32 7.874 54.509 14.911 67.819 23.695L68.094 23.278L68.369 22.861C55.11 14.109 44.804 6.987 34.484 3.137C24.122 -0.728 13.75 -1.297 0.348 2.986L0.5 3.463Z" fill="white" /></svg>
+            </div>
+            <div className="absolute" style={{ left: "-1%", top: "50%", maxWidth: "170px" }}>
+              <p className="font-bold leading-tight" style={{ color: "#fff", fontSize: "12px" }}>Two GPUs.One workspace</p>
+              <p className="leading-tight mt-0.5 text-right" style={{ color: "#0DF0B7", fontSize: "10px" }}>Pytorch training on the A100.<br /> IsaacSim running on the <br /> Blackwell</p>
+            </div>
           </div>
-          <div className="absolute pointer-events-none flex items-center justify-center" style={{ left: "11%", top: "24.41%", width: "51.29px", height: "19.35px" }}>
-            <svg viewBox="0 0 52.644 15.938" width="50" height="15.14" fill="none" style={{ overflow: "visible", flexShrink: 0, transform: "rotate(-174.88deg)" }}><path d="M0.578 0.482C0.305 0.439 0.049 0.625 0.006 0.898C-0.037 1.171 0.15 1.427 0.423 1.47L0.5 0.976L0.578 0.482ZM51.13 0.335C51.038 0.074 50.753 -0.063 50.492 0.028L46.245 1.515C45.984 1.606 45.847 1.891 45.938 2.152C46.03 2.413 46.315 2.55 46.575 2.459L50.351 1.137L51.672 4.913C51.764 5.173 52.049 5.311 52.309 5.219C52.57 5.128 52.707 4.843 52.616 4.582L51.13 0.335ZM0.5 0.976L0.423 1.47C5.419 2.254 10.081 4.562 14.537 7.133C18.961 9.686 23.226 12.529 27.307 14.263C31.413 16.008 35.459 16.69 39.468 14.827C43.45 12.977 47.282 8.665 51.108 0.717L50.658 0.5L50.207 0.283C46.416 8.158 42.714 12.216 39.046 13.92C35.404 15.613 31.682 15.035 27.698 13.343C23.691 11.64 19.546 8.869 15.037 6.267C10.559 3.683 5.764 1.296 0.578 0.482L0.5 0.976Z" fill="white" /></svg>
+
+          {/* GROUP 2: Scroll Reveal 3 Features */}
+          <div className={`absolute inset-0 transition-all duration-700 ease-in-out ${mockupStep === 2 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}>
+            {/* 4. The Agent */}
+            <div className="absolute pointer-events-none flex items-center justify-center" style={{ left: "82%", top: "57.09%", width: "106.88px", height: "61.68px" }}>
+              <svg viewBox="0 0 110.09 20.476" width="109" height="20.28" fill="none" style={{ overflow: "visible", flexShrink: 0, transform: "rotate(-24.4deg)" }}><path d="M0.248 18.313C0.009 18.453 -0.071 18.759 0.068 18.997C0.208 19.236 0.514 19.316 0.752 19.176L0.5 18.745L0.248 18.313ZM51.131 0.54L51.11 0.04L51.131 0.54ZM109.726 19.226C109.992 19.15 110.146 18.874 110.07 18.608L108.84 14.28C108.764 14.014 108.488 13.86 108.222 13.935C107.956 14.011 107.802 14.288 107.878 14.553L108.972 18.401L105.124 19.495C104.859 19.57 104.705 19.847 104.78 20.112C104.856 20.378 105.132 20.532 105.398 20.456L109.726 19.226ZM0.5 18.745C0.752 19.176 0.753 19.176 0.753 19.176C0.753 19.176 0.753 19.176 0.754 19.176C0.754 19.175 0.756 19.174 0.757 19.174C0.761 19.172 0.766 19.169 0.773 19.164C0.787 19.156 0.808 19.144 0.836 19.128C0.892 19.096 0.976 19.047 1.086 18.984C1.306 18.858 1.633 18.673 2.056 18.436C2.903 17.963 4.137 17.286 5.684 16.47C8.779 14.838 13.124 12.653 18.124 10.44C28.142 6.006 40.727 1.489 51.153 1.04L51.131 0.54L51.11 0.04C40.485 0.498 27.755 5.084 17.719 9.525C12.693 11.75 8.327 13.946 5.218 15.586C3.663 16.406 2.422 17.087 1.568 17.563C1.142 17.802 0.812 17.989 0.589 18.116C0.477 18.18 0.392 18.229 0.335 18.262C0.307 18.279 0.285 18.292 0.27 18.3C0.263 18.304 0.257 18.308 0.254 18.31C0.252 18.311 0.25 18.312 0.249 18.312C0.249 18.313 0.248 18.313 0.248 18.313C0.248 18.313 0.248 18.313 0.5 18.745ZM51.131 0.54L51.153 1.04C63.008 0.529 77.538 5.043 89.151 9.719C94.947 12.054 99.998 14.42 103.6 16.203C105.401 17.095 106.839 17.84 107.826 18.362C108.319 18.623 108.7 18.829 108.957 18.968C109.086 19.038 109.183 19.092 109.249 19.128C109.281 19.146 109.306 19.159 109.322 19.168C109.33 19.173 109.336 19.176 109.34 19.178C109.342 19.18 109.344 19.18 109.345 19.181C109.345 19.181 109.346 19.181 109.346 19.181C109.346 19.182 109.346 19.182 109.589 18.745C109.833 18.308 109.833 18.308 109.832 18.308C109.832 18.307 109.832 18.307 109.831 18.307C109.83 18.306 109.828 18.305 109.826 18.304C109.822 18.302 109.815 18.298 109.807 18.294C109.79 18.284 109.764 18.27 109.731 18.252C109.664 18.215 109.565 18.161 109.435 18.09C109.174 17.948 108.79 17.741 108.293 17.478C107.299 16.952 105.853 16.203 104.044 15.307C100.425 13.516 95.35 11.138 89.524 8.792C77.893 4.108 63.193 -0.48 51.11 0.04L51.131 0.54Z" fill="#A7A7A7" /></svg>
+            </div>
+            <div className="absolute" style={{ left: "89%", top: "50%", maxWidth: "200px" }}>
+              <p className="font-bold leading-tight" style={{ color: "#fff", fontSize: "12px" }}>The agent that uses real apps</p>
+              <p className="leading-tight mt-0.5" style={{ color: "#0DF0B7", fontSize: "10px" }}>&ldquo;Render frame 240.&rdquo; It opens blender and does it</p>
+            </div>
+
+            {/* 5. Hands Off */}
+            <div className="absolute pointer-events-none flex items-center justify-center" style={{ left: "82%", top: "77.8%", width: "114.74px", height: "75.12px" }}>
+              <svg viewBox="0 0 109.349 39.3" width="108" height="38.79" fill="none" style={{ overflow: "visible", flexShrink: 0, transform: "rotate(-21.38deg)" }}><path d="M0.902 5.078C0.738 4.855 0.425 4.808 0.203 4.972C-0.019 5.136 -0.066 5.449 0.098 5.671L0.5 5.374L0.902 5.078ZM109.228 0.486C109.22 0.21 108.99 -0.007 108.714 0L104.216 0.122C103.94 0.129 103.722 0.359 103.73 0.635C103.737 0.911 103.967 1.129 104.243 1.121L108.241 1.013L108.35 5.012C108.357 5.288 108.587 5.506 108.863 5.498C109.139 5.491 109.357 5.261 109.349 4.985L109.228 0.486ZM0.5 5.374L0.098 5.671C19.073 31.389 35.989 41.231 53.44 38.992C62.137 37.877 70.905 33.764 80.06 27.231C89.215 20.697 98.785 11.722 109.091 0.844L108.728 0.5L108.365 0.156C98.077 11.016 88.558 19.938 79.479 26.417C70.399 32.896 61.787 36.913 53.312 38C36.418 40.167 19.813 30.708 0.902 5.078L0.5 5.374Z" fill="white" /></svg>
+            </div>
+            <div className="absolute" style={{ left: "89%", top: "69%", maxWidth: "200px" }}>
+              <p className="font-bold leading-tight" style={{ color: "#fff", fontSize: "12px" }}>Hands off a running workspace</p>
+              <p className="leading-tight mt-0.5" style={{ color: "#0DF0B7", fontSize: "10px" }}>Send a link. Your teammate picks up where you left off</p>
+            </div>
+
+            {/* 6. Windows + Linux */}
+            <div className="absolute pointer-events-none flex items-center justify-center" style={{ left: "44.92%", top: "88%", width: "127.06px", height: "84.44px" }}>
+              <svg viewBox="0 0 124.483 38.064" width="123" height="37.59" fill="none" style={{ overflow: "visible", flexShrink: 0, transform: "rotate(24.9deg)" }}><path d="M0.993 1.714C0.949 1.441 0.692 1.257 0.419 1.301C0.147 1.346 -0.038 1.603 0.007 1.876L0.5 1.795L0.993 1.714ZM124.462 1.939C124.541 1.674 124.391 1.395 124.127 1.316L119.817 0.021C119.553 -0.058 119.274 0.092 119.194 0.356C119.115 0.621 119.265 0.9 119.529 0.979L123.36 2.13L122.209 5.961C122.13 6.225 122.28 6.504 122.544 6.583C122.809 6.663 123.088 6.513 123.167 6.248L124.462 1.939ZM0.5 1.795L0.007 1.876C2.004 14.039 5.294 23.142 10.531 29.182C15.791 35.248 22.964 38.167 32.575 38.062C42.161 37.957 54.195 34.845 69.251 28.85C84.314 22.853 102.44 13.953 124.22 2.235L123.983 1.795L123.746 1.354C101.978 13.065 83.891 21.945 68.881 27.921C53.864 33.901 41.965 36.959 32.564 37.062C23.187 37.164 16.318 34.33 11.286 28.527C6.231 22.696 2.98 13.812 0.993 1.714L0.5 1.795Z" fill="white" /></svg>
+            </div>
+            <div className="absolute" style={{ left: "55%", top: "93%", maxWidth: "285px" }}>
+              <p className="font-bold leading-tight" style={{ color: "#fff", fontSize: "12px" }}>Windows and linux apps together</p>
+              <p className="leading-tight mt-0.5" style={{ color: "#0DF0B7", fontSize: "10px" }}>Blender, Fusion, Isaac Sim in the same <br /> workspace.</p>
+            </div>
           </div>
-          <div className="absolute pointer-events-none flex items-center justify-center" style={{ left: "10%", top: "46.55%", width: "68.75px", height: "26.49px" }}>
-            <svg viewBox="0 0 68.594 24.681" width="68" height="24.47" fill="none" style={{ overflow: "visible", flexShrink: 0, transform: "scaleY(-1) rotate(-176.82deg)" }}><path d="M0.348 2.986C0.085 3.07 -0.06 3.352 0.024 3.615C0.108 3.878 0.389 4.023 0.652 3.939L0.5 3.463L0.348 2.986ZM68.194 23.768C68.465 23.713 68.639 23.448 68.584 23.178L67.681 18.769C67.626 18.499 67.361 18.324 67.091 18.38C66.82 18.435 66.646 18.699 66.701 18.97L67.504 22.889L63.585 23.691C63.315 23.747 63.14 24.011 63.196 24.281C63.251 24.552 63.515 24.726 63.786 24.671L68.194 23.768ZM0.5 3.463L0.652 3.939C13.852 -0.28 23.993 0.291 34.135 4.074C44.32 7.874 54.509 14.911 67.819 23.695L68.094 23.278L68.369 22.861C55.11 14.109 44.804 6.987 34.484 3.137C24.122 -0.728 13.75 -1.297 0.348 2.986L0.5 3.463Z" fill="white" /></svg>
-          </div>
-          <div className="absolute pointer-events-none flex items-center justify-center" style={{ left: "82%", top: "57.09%", width: "106.88px", height: "61.68px" }}>
-            <svg viewBox="0 0 110.09 20.476" width="109" height="20.28" fill="none" style={{ overflow: "visible", flexShrink: 0, transform: "rotate(-24.4deg)" }}><path d="M0.248 18.313C0.009 18.453 -0.071 18.759 0.068 18.997C0.208 19.236 0.514 19.316 0.752 19.176L0.5 18.745L0.248 18.313ZM51.131 0.54L51.11 0.04L51.131 0.54ZM109.726 19.226C109.992 19.15 110.146 18.874 110.07 18.608L108.84 14.28C108.764 14.014 108.488 13.86 108.222 13.935C107.956 14.011 107.802 14.288 107.878 14.553L108.972 18.401L105.124 19.495C104.859 19.57 104.705 19.847 104.78 20.112C104.856 20.378 105.132 20.532 105.398 20.456L109.726 19.226ZM0.5 18.745C0.752 19.176 0.753 19.176 0.753 19.176C0.753 19.176 0.753 19.176 0.754 19.176C0.754 19.175 0.756 19.174 0.757 19.174C0.761 19.172 0.766 19.169 0.773 19.164C0.787 19.156 0.808 19.144 0.836 19.128C0.892 19.096 0.976 19.047 1.086 18.984C1.306 18.858 1.633 18.673 2.056 18.436C2.903 17.963 4.137 17.286 5.684 16.47C8.779 14.838 13.124 12.653 18.124 10.44C28.142 6.006 40.727 1.489 51.153 1.04L51.131 0.54L51.11 0.04C40.485 0.498 27.755 5.084 17.719 9.525C12.693 11.75 8.327 13.946 5.218 15.586C3.663 16.406 2.422 17.087 1.568 17.563C1.142 17.802 0.812 17.989 0.589 18.116C0.477 18.18 0.392 18.229 0.335 18.262C0.307 18.279 0.285 18.292 0.27 18.3C0.263 18.304 0.257 18.308 0.254 18.31C0.252 18.311 0.25 18.312 0.249 18.312C0.249 18.313 0.248 18.313 0.248 18.313C0.248 18.313 0.248 18.313 0.5 18.745ZM51.131 0.54L51.153 1.04C63.008 0.529 77.538 5.043 89.151 9.719C94.947 12.054 99.998 14.42 103.6 16.203C105.401 17.095 106.839 17.84 107.826 18.362C108.319 18.623 108.7 18.829 108.957 18.968C109.086 19.038 109.183 19.092 109.249 19.128C109.281 19.146 109.306 19.159 109.322 19.168C109.33 19.173 109.336 19.176 109.34 19.178C109.342 19.18 109.344 19.18 109.345 19.181C109.345 19.181 109.346 19.181 109.346 19.181C109.346 19.182 109.346 19.182 109.589 18.745C109.833 18.308 109.833 18.308 109.832 18.308C109.832 18.307 109.832 18.307 109.831 18.307C109.83 18.306 109.828 18.305 109.826 18.304C109.822 18.302 109.815 18.298 109.807 18.294C109.79 18.284 109.764 18.27 109.731 18.252C109.664 18.215 109.565 18.161 109.435 18.09C109.174 17.948 108.79 17.741 108.293 17.478C107.299 16.952 105.853 16.203 104.044 15.307C100.425 13.516 95.35 11.138 89.524 8.792C77.893 4.108 63.193 -0.48 51.11 0.04L51.131 0.54Z" fill="#A7A7A7" /></svg>
-          </div>
-          <div className="absolute pointer-events-none flex items-center justify-center" style={{ left: "82%", top: "77.8%", width: "114.74px", height: "75.12px" }}>
-            <svg viewBox="0 0 109.349 39.3" width="108" height="38.79" fill="none" style={{ overflow: "visible", flexShrink: 0, transform: "rotate(-21.38deg)" }}><path d="M0.902 5.078C0.738 4.855 0.425 4.808 0.203 4.972C-0.019 5.136 -0.066 5.449 0.098 5.671L0.5 5.374L0.902 5.078ZM109.228 0.486C109.22 0.21 108.99 -0.007 108.714 0L104.216 0.122C103.94 0.129 103.722 0.359 103.73 0.635C103.737 0.911 103.967 1.129 104.243 1.121L108.241 1.013L108.35 5.012C108.357 5.288 108.587 5.506 108.863 5.498C109.139 5.491 109.357 5.261 109.349 4.985L109.228 0.486ZM0.5 5.374L0.098 5.671C19.073 31.389 35.989 41.231 53.44 38.992C62.137 37.877 70.905 33.764 80.06 27.231C89.215 20.697 98.785 11.722 109.091 0.844L108.728 0.5L108.365 0.156C98.077 11.016 88.558 19.938 79.479 26.417C70.399 32.896 61.787 36.913 53.312 38C36.418 40.167 19.813 30.708 0.902 5.078L0.5 5.374Z" fill="white" /></svg>
-          </div>
-          <div className="absolute pointer-events-none flex items-center justify-center" style={{ left: "44.92%", top: "88%", width: "127.06px", height: "84.44px" }}>
-            <svg viewBox="0 0 124.483 38.064" width="123" height="37.59" fill="none" style={{ overflow: "visible", flexShrink: 0, transform: "rotate(24.9deg)" }}><path d="M0.993 1.714C0.949 1.441 0.692 1.257 0.419 1.301C0.147 1.346 -0.038 1.603 0.007 1.876L0.5 1.795L0.993 1.714ZM124.462 1.939C124.541 1.674 124.391 1.395 124.127 1.316L119.817 0.021C119.553 -0.058 119.274 0.092 119.194 0.356C119.115 0.621 119.265 0.9 119.529 0.979L123.36 2.13L122.209 5.961C122.13 6.225 122.28 6.504 122.544 6.583C122.809 6.663 123.088 6.513 123.167 6.248L124.462 1.939ZM0.5 1.795L0.007 1.876C2.004 14.039 5.294 23.142 10.531 29.182C15.791 35.248 22.964 38.167 32.575 38.062C42.161 37.957 54.195 34.845 69.251 28.85C84.314 22.853 102.44 13.953 124.22 2.235L123.983 1.795L123.746 1.354C101.978 13.065 83.891 21.945 68.881 27.921C53.864 33.901 41.965 36.959 32.564 37.062C23.187 37.164 16.318 34.33 11.286 28.527C6.231 22.696 2.98 13.812 0.993 1.714L0.5 1.795Z" fill="white" /></svg>
-          </div>
-          <div className="absolute" style={{ left: "83.3%", top: "-3%", maxWidth: "170px" }}>
-            <p className="font-bold leading-tight" style={{ color: "#fff", fontSize: "12px" }}>Its just a Browser tab</p>
-            <p className="leading-tight mt-0.5" style={{ color: "#0DF0B7", fontSize: "10px" }}>No install,No driver setup, works<br /> on a chromebook</p>
-          </div>
-          <div className="absolute text-right" style={{ right: "88.5%", top: "27%", maxWidth: "170px" }}>
-            <p className="font-bold leading-tight" style={{ color: "#fff", fontSize: "12px" }}>Per-app GPU telemetry</p>
-            <p className="leading-tight mt-0.5" style={{ color: "#0DF0B7", fontSize: "10px" }}>See exactly which app is using GPU,live</p>
-          </div>
-          <div className="absolute" style={{ left: "-1%", top: "50%", maxWidth: "170px" }}>
-            <p className="font-bold leading-tight" style={{ color: "#fff", fontSize: "12px" }}>Two GPUs.One workspace</p>
-            <p className="leading-tight mt-0.5 text-right" style={{ color: "#0DF0B7", fontSize: "10px" }}>Pytorch training on the A100.<br /> IsaacSim running on the <br /> Blackwell</p>
-          </div>
-          <div className="absolute" style={{ left: "89%", top: "50%", maxWidth: "200px" }}>
-            <p className="font-bold leading-tight" style={{ color: "#fff", fontSize: "12px" }}>The agent that uses real apps</p>
-            <p className="leading-tight mt-0.5" style={{ color: "#0DF0B7", fontSize: "10px" }}>&ldquo;Render frame 240.&rdquo; It opens blender and does it</p>
-          </div>
-          <div className="absolute" style={{ left: "89%", top: "69%", maxWidth: "200px" }}>
-            <p className="font-bold leading-tight" style={{ color: "#fff", fontSize: "12px" }}>Hands off a running workspace</p>
-            <p className="leading-tight mt-0.5" style={{ color: "#0DF0B7", fontSize: "10px" }}>Send a link. Your teammate picks up where you left off</p>
-          </div>
-          <div className="absolute" style={{ left: "55%", top: "93%", maxWidth: "285px" }}>
-            <p className="font-bold leading-tight" style={{ color: "#fff", fontSize: "12px" }}>Windows and linux apps together</p>
-            <p className="leading-tight mt-0.5" style={{ color: "#0DF0B7", fontSize: "10px" }}>Blender, Fusion, Isaac Sim in the same <br /> workspace.</p>
-          </div>
+
         </div>
 
         {/* Mobile/tablet -- plain image */}
@@ -134,9 +203,9 @@ export default function Home() {
       </section>
 
       {/* 3. iMessage / Problem -- Solution */}
-      <section className="relative z-10 mt-16 px-4 md:px-1 max-w-[760px] mx-auto flex flex-col gap-4">
+      <section className="relative z-10 mt-16 px-4 md:px-1 max-w-[960px] mx-auto flex flex-col gap-4">
         <div className="flex items-end gap-0">
-          <div className="relative bg-neutral-800 rounded-[18px] rounded-bl-[4px] p-4 sm:px-[12px] sm:py-[6px] max-w-[476px]">
+          <div className="relative bg-neutral-900 rounded-[18px] rounded-bl-[4px] p-4 sm:px-[12px] sm:py-[6px] max-w-[476px]">
             <p className="text-neutral-200 text-[15px] sm:text-[18px] leading-6 tracking-[0.22px] capitalize font-normal">
               OpenClaw. Claude Cowork. Manus. Perplexity Computer. The smartest agents ever built — all trapped inside
               machines designed in 1973. One cursor. One keyboard. One thing at a time. The most intelligent software in
@@ -213,9 +282,14 @@ export default function Home() {
         <div className="bg-[rgba(34,34,34,0.6)] rounded-[12px] p-8 md:px-12 md:py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-12 md:gap-8">
             <div className="flex flex-col gap-2 text-center flex-1">
+              <p className="text-neutral-400 text-[13px] font-normal">Setup time</p>
+              <p className="text-white text-[48px] font-bold leading-none">0</p>
+              <p className="text-neutral-500 text-[11px]">for every use</p>
+            </div>
+            <div className="flex flex-col gap-2 text-center flex-1">
               <p className="text-neutral-400 text-[13px] font-normal">Performance</p>
-              <p className="text-white text-[48px] font-bold leading-none">&lt;3s</p>
-              <p className="text-neutral-500 text-[11px]">cold starts</p>
+              <p className="text-white text-[48px] font-bold leading-none">{"<3s"}</p>
+              <p className="text-neutral-500 text-[11px]">Cold start</p>
             </div>
             <div className="flex flex-col gap-2 text-center flex-1">
               <p className="text-neutral-400 text-[13px] font-normal">Ecosystem</p>
@@ -223,14 +297,9 @@ export default function Home() {
               <p className="text-neutral-500 text-[11px]">native apps</p>
             </div>
             <div className="flex flex-col gap-2 text-center flex-1">
-              <p className="text-neutral-400 text-[13px] font-normal">Adoption</p>
-              <p className="text-white text-[48px] font-bold leading-none">2M+</p>
-              <p className="text-neutral-500 text-[11px]">launch views</p>
-            </div>
-            <div className="flex flex-col gap-2 text-center flex-1">
-              <p className="text-neutral-400 text-[13px] font-normal">Support</p>
-              <p className="text-white text-[76px] font-normal leading-none">∞</p>
-              <p className="text-neutral-500 text-[11px]">devices supported</p>
+              <p className="text-neutral-400 text-[13px] font-normal">Trusted by</p>
+              <p className="text-white text-[48px] font-bold leading-none">138</p>
+              <p className="text-neutral-500 text-[11px]">Organizations</p>
             </div>
           </div>
         </div>
@@ -357,7 +426,7 @@ export default function Home() {
                 
                 <div className="flex gap-[10px] items-center shrink-0">
                   <div className="bg-[rgba(105,105,105,0.5)] rounded-[4px] w-[33px] h-[33px] flex items-center justify-center">
-                    <Image src="/images/home_paradigm-shift/Hamburger Menu Printable - iconSvg.co.svg" alt="Time" width={30} height={30} className="object-contain" />
+                    <Image src="/images/home_paradigm-shift/Hamburger Menu Printable - iconSvg.co.svg" alt="Time" width={30} height={30} style={{ width: 30, height: 30 }} className="object-contain" />
                   </div>
                   <div className="flex flex-col gap-0.5">
                     <p className="text-neutral-100 text-[14px] leading-normal font-bold">Waiting Queue</p>
@@ -501,51 +570,47 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 13. "What people are building" */}
-      <section className="relative z-10 mt-24 md:mt-32 w-full max-w-[1300px] mx-auto flex flex-col items-center">
-        <h2 className="text-white font-bold text-[40px] md:text-[56px] leading-[1.1] md:leading-[1.2] text-center mb-10 md:mb-[60px] px-4">
-          What people are<br />
-          <span className="text-neutral-500">building</span>
-        </h2>
+      {/* 13. "What people are building" — scroll-jacked horizontal carousel */}
+      <div
+        ref={buildingRef}
+        className="relative z-10 mt-24 md:mt-32"
+        style={{ height: "350vh" }}
+      >
+        <div className="sticky top-0 h-svh flex flex-col justify-center overflow-visible">
+          <h2 className="text-white font-bold text-[32px] md:text-[56px] leading-[1.1] md:leading-[1.2] text-center mb-6 md:mb-15 px-4 shrink-0">
+            What people are<br />
+            <span className="text-neutral-500">building</span>
+          </h2>
 
-        {/* Carousel Grid using Swiper */}
-        <div className="w-full overflow-hidden pb-8 px-4 md:px-8">
-          <Swiper
-            modules={[Autoplay]}
-            spaceBetween={24}
-            slidesPerView="auto"
-            loop={true}
-            autoplay={{
-              delay: 2000,
-              disableOnInteraction: true,
-              pauseOnMouseEnter: true,
-            }}
-            className="w-full"
-          >
-            {buildingData.map((item, i) => (
-              <SwiperSlide
-                key={i}
-                className="!w-[85vw] md:!w-[400px] lg:!w-[450px] cursor-pointer"
-              >
-                <Link href="/use-cases" className="block group">
-                  <div className="relative aspect-[4/3] w-full rounded-[12px] overflow-hidden mb-5 border border-white/5">
-                    <Image 
-                      src={item.image} 
-                      alt={item.title} 
-                      fill 
-                      sizes="(max-width: 768px) 85vw, 450px"
-                      className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
+          <div className="w-full overflow-visible">
+            <motion.div
+              className="flex gap-4 md:gap-6"
+              style={{ x: buildingX, paddingLeft: "10vw" }}
+            >
+              {buildingData.map((item, i) => (
+                <Link
+                  key={i}
+                  href="/use-cases"
+                  className="shrink-0 group cursor-pointer w-70 md:w-110"
+                >
+                  <div className="relative aspect-[4/3] w-full rounded-[12px] overflow-hidden mb-4 md:mb-5 border border-white/5">
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      sizes="(max-width: 768px) 280px, 440px"
+                      className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
                   </div>
                   <h3 className="text-white text-[16px] md:text-[18px] font-medium tracking-wide">
                     {item.title}
                   </h3>
                 </Link>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+              ))}
+            </motion.div>
+          </div>
         </div>
-      </section>
+      </div>
 
       {/* 14. Pricing */}
       <section className="relative z-10 mt-24 px-4 max-w-[1300px] mx-auto">
@@ -645,13 +710,29 @@ export default function Home() {
       </section>
 
       {/* 15. "Already running in production" logo bar */}
-      <section className="relative z-10 mt-24 px-4 max-w-[1300px] mx-auto text-center">
-        <div className="flex flex-col gap-6 md:gap-[36px] items-center w-full max-w-[905px] mx-auto">
-          <p className="text-neutral-400 text-[16px] md:text-[20px] font-bold">Already running in production</p>
-          <div className="flex flex-wrap gap-6 md:gap-[47px] items-center justify-center text-white text-[24px] md:text-[32px] font-bold">
-            {["LOGO", "LOGO", "LOGO", "LOGO", "LOGO", "LOGO", "LOGO"].map((l, i) => (
-              <span key={i} className="opacity-40">{l}</span>
-            ))}
+      <section className="relative z-10 mt-24 px-4 max-w-[1300px] mx-auto text-center overflow-hidden">
+        <div className="flex flex-col gap-6 md:gap-[36px] items-center w-full mx-auto">
+          <p className="text-neutral-400 text-[16px] md:text-[20px] font-bold">
+            Already running in production
+          </p>
+          
+          <div className="w-full">
+            <Marquee 
+              gradient={true} 
+              gradientColor="#0A0A0A" // Match your background color here
+              gradientWidth={100}
+              speed={50}
+            >
+              <div className="flex gap-12 md:gap-[80px] px-6">
+                {["LOGO 1", "LOGO 2", "LOGO 3", "LOGO 4", "LOGO 5", "LOGO 6", "LOGO 7"].map((l, i) => (
+                  <span key={i} className="text-white text-[24px] md:text-[32px] font-bold opacity-40 whitespace-nowrap">
+                    {l}
+                  </span>
+                  // Replace this with real image logo
+                  // <Image src="/images/logos/brand-logo.png" alt="Brand" width={120} height={40} className="mx-8" />
+                ))}
+              </div>
+            </Marquee>
           </div>
         </div>
       </section>

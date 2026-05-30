@@ -1,10 +1,11 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import BackgroundOrbs from "@/components/background-orbs";
 import Button from "@/components/button";
-
+import { motion } from "framer-motion";
 
 const steps = [
   {
@@ -54,7 +55,7 @@ export default function HowItWorks() {
       <Navbar />
 
       {/* ── Hero ── */}
-      <section className="relative p-5 pb-16 px-6 mt-7 md:mt-60 overflow-hidden z-10 mt-10">
+      <section className="relative p-5 pb-16 px-6 mt-7 md:mt-60 overflow-hidden z-10">
         <div className="relative max-w-5xl mx-auto flex flex-col items-center text-center">
           <h1 className="text-gradient-primary font-bold text-[56px] md:text-[64px] leading-tight mb-6 tracking-tight">
             A New Computing
@@ -83,29 +84,36 @@ export default function HowItWorks() {
                 className={`relative flex flex-col ${isTextLeft ? "md:flex-row" : "md:flex-row-reverse"
                   } items-center gap-12 md:gap-44 z-10 w-full`}
               >
-                {/* Text Block */}
-                <div className={`flex-1 flex flex-col gap-4 relative ${isTextLeft ? 'md:items-end md:text-right' : 'md:items-start md:text-left'} items-start text-left`}>
+                {/* Text Block - Animated */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 50, x: isTextLeft ? -40 : 40 }}
+                  whileInView={{ opacity: 1, y: 0, x: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 1, ease: "easeOut" }}
+                  className={`flex-1 flex flex-col gap-4 relative ${isTextLeft ? 'md:items-end md:text-right' : 'md:items-start md:text-left'} items-start text-left`}
+                >
 
                   {/* --- CURVED HORIZONTAL CONNECTORS --- */}
-                  {/* Uses the exact Arrow 16.svg from Figma */}
                   {isTextLeft ? (
                     // Connector pointing LEFT towards text block
                     <div className="hidden md:block absolute top-[0px] -right-[87px] w-[85px] h-[40px] pointer-events-none">
-                      <Image 
-                        src="/images/Arrow 16.svg" 
-                        alt="Arrow left" 
-                        fill 
-                        className="object-contain object-left-bottom" 
+                      <Image
+                        src="/images/Arrow 16.svg"
+                        alt="Arrow left"
+                        fill
+                        sizes="85px"
+                        className="object-contain object-left-bottom"
                       />
                     </div>
                   ) : (
                     // Connector pointing RIGHT towards text block (Flipped horizontally)
                     <div className="hidden md:block absolute top-[0px] -left-[87px] w-[85px] h-[40px] pointer-events-none">
-                      <Image 
-                        src="/images/Arrow 16.svg" 
-                        alt="Arrow right" 
-                        fill 
-                        className="object-contain object-right-bottom scale-x-[-1]" 
+                      <Image
+                        src="/images/Arrow 16.svg"
+                        alt="Arrow right"
+                        fill
+                        sizes="85px"
+                        className="object-contain object-right-bottom scale-x-[-1]"
                       />
                     </div>
                   )}
@@ -120,10 +128,16 @@ export default function HowItWorks() {
                   <p className="text-muted text-base leading-relaxed max-w-md">
                     {step.desc}
                   </p>
-                </div>
+                </motion.div>
 
-                {/* Image Block */}
-                <div className="flex-1 w-full">
+                {/* Image Block - Animated */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 50, x: isTextLeft ? 40 : -40 }}
+                  whileInView={{ opacity: 1, y: 0, x: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+                  className="flex-1 w-full"
+                >
                   <div className="bg-[rgba(34,34,34,0.6)] rounded-[12px] overflow-hidden shadow-2xl relative z-10">
                     <div className="bg-[rgba(44,44,44,0.61)] h-[33px] flex items-center px-4 gap-2">
                       <div className="flex gap-1.5">
@@ -133,10 +147,10 @@ export default function HowItWorks() {
                       </div>
                     </div>
                     <div className="relative w-full aspect-[16/9]">
-                      <Image src={step.image} alt={step.alt} fill className="object-cover" />
+                      <Image src={step.image} alt={step.alt} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                     </div>
                   </div>
-                </div>
+                </motion.div>
               </div>
             );
           })}
