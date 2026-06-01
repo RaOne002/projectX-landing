@@ -718,9 +718,6 @@ export default function Home() {
           
           <div className="w-full">
             <Marquee 
-              gradient={true} 
-              gradientColor="#0A0A0A" // Match your background color here
-              gradientWidth={100}
               speed={50}
             >
               <div className="flex gap-12 md:gap-[80px] px-6">
